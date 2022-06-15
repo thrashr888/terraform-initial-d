@@ -10,12 +10,7 @@ resource "aws_s3_bucket" "b" {
   bucket = var.bucket_name
   bucket_prefix = var.bucket_prefix
 
-  acl                 = "private"
   object_lock_enabled = false
-
-  versioning {
-    enabled = false
-  }
 
   tags = {
     Name        = "My bucket"
@@ -26,4 +21,11 @@ resource "aws_s3_bucket" "b" {
 resource "aws_s3_bucket_acl" "example" {
   bucket = aws_s3_bucket.b.id
   acl    = "private"
+}
+
+resource "aws_s3_bucket_versioning" "versioning_example" {
+  bucket = aws_s3_bucket.b.id
+  versioning_configuration {
+    status = "Enabled"
+  }
 }
