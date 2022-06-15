@@ -12,16 +12,11 @@ provider "aws" {
   region = "us-east-1"
 }
 
-variable "bucket_name" {
+variable "bucket_prefix" {
   default = "drift-bucket"
 }
 
-variable "bucket_prefix" {
-  default = "this-default-wont-work-for-you"
-}
-
 resource "aws_s3_bucket" "b" {
-  bucket = var.bucket_name
   bucket_prefix = var.bucket_prefix
 
   object_lock_enabled = false
