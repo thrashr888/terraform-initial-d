@@ -30,6 +30,12 @@ resource "aws_s3_bucket" "b" {
 resource "aws_s3_bucket_acl" "example" {
   bucket = aws_s3_bucket.b.id
   acl    = "private"
+  lifecycle {
+    postcondition {
+      condition = self.acl == "private"
+      error_message = "This bucket should stay private but it's been changed."
+    }
+  }
 }
 
 resource "aws_s3_bucket_versioning" "versioning_example" {
@@ -37,8 +43,18 @@ resource "aws_s3_bucket_versioning" "versioning_example" {
   versioning_configuration {
     status = "Enabled"
   }
+  lifecycle {
+    postcondition {
+      condition = self.versioning_configuration.status == "Enabled"
+      error_message = "This bucket should stay versioned but it's been changed."
+    }
+  }
 }
 
 output "bucket_name" {
   value = aws_s3_bucket.b.bucket_domain_name
+}
+
+output "region_domain_name" {
+  value = aws_s3_bucket.b.bucket_regional_domain_name
 }
