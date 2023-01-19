@@ -45,7 +45,7 @@ resource "aws_s3_bucket_versioning" "versioning_example" {
   }
   lifecycle {
     postcondition {
-      condition = self.versioning_configuration.status == "Enabled"
+      condition = self.versioning_configuration[0].status == "Enabled"
       error_message = "This bucket should stay versioned but it's been changed."
     }
   }
